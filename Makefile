@@ -16,7 +16,7 @@ container-build: clean
 	docker build --tag $(CONTAINER_IMAGE) --file Dockerfile .
 
 .PHONY: container-push
-container-push: container-build
+container-push: container-build test
 	docker push $(CONTAINER_IMAGE)
 
 
@@ -35,3 +35,4 @@ test:
 	# start test
 	docker run --user "$(shell id -u):$(shell id -g)" --rm -it -v "$(_TMP_DIR):/var/data/project" $(CONTAINER_IMAGE)
 
+	test -e "$(_TMP_DIR)/node_modules"
